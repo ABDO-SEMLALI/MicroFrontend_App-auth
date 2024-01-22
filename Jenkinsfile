@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    EMAIL_LIST = 'abdelkarimsemlali67@gmail.com, mohamedelkaddiri@gmail.com'
   }
   stages {
     stage('Checkout code') {
@@ -40,15 +41,17 @@ pipeline {
 
   post {
     success {
-      mail bcc: '', body: '''Le pipeline Jenkins s\'est execute avec succes. 
-      Tout s\'est deroule sans erreur.
-      Voici le lien de l'application si vous souhaitez le consulter : https://pfea8.azurewebsites.net/
-      ''', subject: 'Sujet : Reussite du pipeline Jenkins', to: 'abdelkarimsemlali67@gmail.com, mohamedelkaddiri@gmail.com, alidihaji@gmail.com, chaimaebahij4@gmail.com'
+      mail bcc: '', body: """
+      Le pipeline Jenkins s'est exécuté avec succès le ${currentBuild.startTimeInMillis}.
+      Tout s'est déroulé sans erreur.
+      Voici le lien de l'application si vous souhaitez le consulter
+      """, subject: 'Sujet : Reussite du pipeline Jenkins', to: env.EMAIL_LIST
     }
     failure {
-      mail bcc: '', body: '''Le pipeline Jenkins a echoue. 
-      Veuillez prendre les mesures nécessaires pour resoudre le probleme.
-      ''', subject: 'Sujet : Echec du pipeline Jenkins', to: 'abdelkarimsemlali67@gmail.com, mohamedelkaddiri@gmail.com, alidihaji@gmail.com, chaimaebahij4@gmail.com'
+      mail bcc: '', body: """
+      Le pipeline Jenkins a échoué le ${currentBuild.startTimeInMillis}.
+      Veuillez prendre les mesures nécessaires pour résoudre le problème.
+      """, subject: 'Sujet : Echec du pipeline Jenkins', to: env.EMAIL_LIST
     }
   }
 }
