@@ -19,7 +19,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh "docker build -t ${params.IMAGE_NAME}:latest ."
+        bat "docker build -t ${params.IMAGE_NAME}:latest ."
       }
     }
 
@@ -31,15 +31,15 @@ pipeline {
 
     stage('deployment') {
       steps {
-        sh 'echo -n "$DOCKERHUB_CREDENTIALS_PSW"| docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin'
-        sh "docker tag ${params.IMAGE_NAME}:latest ${params.DOCKERHUB_USERNAME}/${params.IMAGE_NAME}:latest"
-        sh "docker push ${params.DOCKERHUB_USERNAME}/${params.IMAGE_NAME}:latest"
+        bat 'echo %DOCKERHUB_CREDENTIALS_PSW%| docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
+        bat "docker tag ${params.IMAGE_NAME}:latest ${params.DOCKERHUB_USERNAME}/${params.IMAGE_NAME}:latest"
+        bat "docker push ${params.DOCKERHUB_USERNAME}/${params.IMAGE_NAME}:latest"
       }
     }
 
     stage('Cleanup') {
         steps {
-          sh 'docker logout'
+          bat 'docker logout'
         }
       }
   }
