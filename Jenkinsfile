@@ -29,7 +29,7 @@ pipeline {
       }
     }
 
-    stage('Push Images to Docker Hub') {
+    stage('deployment') {
       steps {
         sh 'echo -n "$DOCKERHUB_CREDENTIALS_PSW"| docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin'
         sh "docker tag ${params.IMAGE_NAME}:latest ${params.DOCKERHUB_USERNAME}/${params.IMAGE_NAME}:latest"
